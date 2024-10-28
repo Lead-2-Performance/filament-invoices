@@ -36,11 +36,17 @@
             "email": "info@3x1.io"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Lead-2-Performance/filament-types"
+        }
+    ],
     "require": {
         "php": "^8.1|^8.2",
         "tomatophp/console-helpers": "^1.1",
         "tomatophp/filament-locations": "^1.0",
-        "tomatophp/filament-types": "^1.0",
+        "tomatophp/filament-types": "dev-master",
         "filament/filament": "^3.0.0"
     }
 }
