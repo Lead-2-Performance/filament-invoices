@@ -1,7 +1,10 @@
 ![Screenshot](https://raw.githubusercontent.com/tomatophp/filament-types/master/arts/3x1io-tomato-types.jpg)
 
-# Filament Types
+# Filament Types Manager
 
+[![Dependabot Updates](https://github.com/tomatophp/filament-types/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/tomatophp/filament-types/actions/workflows/dependabot/dependabot-updates)
+[![PHP Code Styling](https://github.com/tomatophp/filament-types/actions/workflows/fix-php-code-styling.yml/badge.svg)](https://github.com/tomatophp/filament-types/actions/workflows/fix-php-code-styling.yml)
+[![Tests](https://github.com/tomatophp/filament-types/actions/workflows/tests.yml/badge.svg)](https://github.com/tomatophp/filament-types/actions/workflows/tests.yml)
 [![Latest Stable Version](https://poser.pugx.org/tomatophp/filament-types/version.svg)](https://packagist.org/packages/tomatophp/filament-types)
 [![License](https://poser.pugx.org/tomatophp/filament-types/license.svg)](https://packagist.org/packages/tomatophp/filament-types)
 [![Downloads](https://poser.pugx.org/tomatophp/filament-types/d/total.svg)](https://packagist.org/packages/tomatophp/filament-types)
@@ -20,30 +23,65 @@ Manage any type on your app in Database with easy to use Resource for FilamentPH
 ```bash
 composer require tomatophp/filament-types
 ```
+
 after install your package please run this command
 
 ```bash
 php artisan filament-types:install
 ```
 
-
-finally reigster the plugin on `/app/Providers/Filament/AdminPanelProvider.php`
+finally register the plugin on `/app/Providers/Filament/AdminPanelProvider.php`
 
 ```php
+use TomatoPHP\FilamentTypes\Services\Contracts\Type;
+use TomatoPHP\FilamentTypes\Services\Contracts\TypeFor;
+use TomatoPHP\FilamentTypes\Services\Contracts\TypeOf;
+
 ->plugin(\TomatoPHP\FilamentTypes\FilamentTypesPlugin::make())
+    ->types([
+        TypeFor::make('posts')
+            ->label('Posts')
+            ->types([
+                TypeOf::make('categories')
+                    ->label('Categories')
+                    ->register([
+                        Type::make('news')
+                            ->name('News')
+                            ->icon('heroicon-o-newspaper')
+                            ->color('#fefefe')
+                    ])
+            ])
+    ])
 ```
 
-## Register New Type
+## Register Type using provider
 
-you can add new type using config file `config/filament-types.php` or you can register a type from your provider using our Facade
+you can register a type from your provider using our Facade
 
 ```php
 use TomatoPHP\FilamentTypes\Facades\FilamentTypes;
+use TomatoPHP\FilamentTypes\Services\Contracts\Type;
+use TomatoPHP\FilamentTypes\Services\Contracts\TypeFor;
+use TomatoPHP\FilamentTypes\Services\Contracts\TypeOf;
 
 FilamentTypes::register([
-    'types',
-    'groups'
-], 'accounts');
+    TypeFor::make('products')
+        ->label('Product')
+        ->types([
+            TypeOf::make('sizes')
+                ->label('Sizes')
+                ->register([
+                    Type::make('xl')
+                        ->name('XL')
+                        ->icon('heroicon-o-adjustments-horizontal')
+                        ->color('warning'),
+                    Type::make('sm')
+                        ->name('SM')
+                        ->icon('heroicon-o-adjustments-horizontal')
+                        ->color('warning')
+                ])
+        ]),
+]);
 ```
 
 ## Use Type Helper
@@ -51,7 +89,11 @@ FilamentTypes::register([
 you can find any type with the helper method to use it anywhere
 
 ```php
-type_of(key: 'pending',for: 'notes',type: 'groups');
+type_of(
+    key: 'pending',
+    for: 'notes',
+    type: 'groups'
+);
 ```
 
 it will return type model for you.
@@ -64,10 +106,10 @@ you can use type column in your table like this
 use TomatoPHP\FilamentTypes\Components\TypeColumn;
 
 TypeColumn::make('type')
-->for('users')
-->type('status')
-->allowDescription()
-->searchable(),
+    ->for('users')
+    ->type('status')
+    ->allowDescription()
+    ->searchable(),
 ```
 
 ## Auto Caching 
@@ -123,24 +165,15 @@ class NotesGroups extends BaseTypePage
     {
         return [
             Type::make('todo')
-                ->name([
-                    "ar" => "مهام",
-                    "en" => "TODO"
-                ])
+                ->name("TODO")
                 ->color('#1461e3')
                 ->icon('heroicon-o-list-bullet'),
             Type::make('ideas')
-                ->name([
-                    "ar" => "أفكار",
-                    "en" => "Ideas"
-                ])
+                ->name("Ideas")
                 ->color('#13e0da')
                 ->icon('heroicon-o-sparkles'),
             Type::make('saved')
-                ->name([
-                    "ar" => "محفوظ",
-                    "en" => "Saved"
-                ])
+                ->name("Saved")
                 ->color('#29a82e')
                 ->icon('heroicon-o-arrow-down-on-square'),
         ];
@@ -163,6 +196,89 @@ if you like to use a type as a package we create a blade component for you to ma
 
 ```html
 <x-tomato-type :type="$type" label="Group"/>
+```
+
+## User Types Resource Hooks
+
+we have add a lot of hooks to make it easy to attach actions, columns, filters, etc
+
+### Table Columns
+
+```php
+use TomatoPHP\FilamentTypes\Filament\Resources\TypeResource\Table\TypeTable;
+
+public function boot()
+{
+    TypeTable::register([
+        \Filament\Tables\Columns\TextColumn::make('something')
+    ]);
+}
+```
+
+### Table Actions
+
+```php
+use TomatoPHP\FilamentTypes\Filament\Resources\TypeResource\Table\TypeActions;
+
+public function boot()
+{
+    TypeActions::register([
+        \Filament\Tables\Actions\ReplicateAction::make()
+    ]);
+}
+```
+
+### Table Filters
+
+```php
+use TomatoPHP\FilamentTypes\Filament\Resources\TypeResource\Table\TypeFilters;
+
+public function boot()
+{
+    TypeFilters::register([
+        \Filament\Tables\Filters\SelectFilter::make('something')
+    ]);
+}
+```
+
+### Table Bulk Actions
+
+```php
+use TomatoPHP\FilamentTypes\Filament\Resources\TypeResource\Table\TypeBulkActions;
+
+public function boot()
+{
+    TypeBulkActions::register([
+        \Filament\Tables\BulkActions\DeleteAction::make()
+    ]);
+}
+```
+
+### From Components
+
+```php
+use TomatoPHP\FilamentTypes\Filament\Resources\TypeResource\Form\TypeForm;
+
+public function boot()
+{
+    TypeForm::register([
+        \Filament\Forms\Components\TextInput::make('something')
+    ]);
+}
+```
+
+### Page Actions
+
+```php
+use TomatoPHP\FilamentTypes\Filament\Resources\TypeResource\Actions\ManagePageActions;
+
+public function boot()
+{
+    ManagePageActions::register([
+        Filament\Actions\Action::make('action')
+    ]);
+ 
+}
 ```
 
 ## Publish Assets
@@ -190,6 +306,31 @@ you can publish migrations file by use this command
 ```bash
 php artisan vendor:publish --tag="filament-types-migrations"
 ```
+
+## Testing
+
+if you like to run `PEST` testing just use this command
+
+```bash
+composer test
+```
+
+## Code Style
+
+if you like to fix the code style just use this command
+
+```bash
+composer format
+```
+
+## PHPStan
+
+if you like to check the code by `PHPStan` just use this command
+
+```bash
+composer analyse
+```
+
 
 ## Other Filament Packages
 

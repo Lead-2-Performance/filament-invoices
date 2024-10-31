@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c57cef667b7b679c531bfe8cbb8d276",
+    "content-hash": "9b90b645b10d6a64e5add25fc4ed3b5b",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -8083,20 +8083,20 @@
         },
         {
             "name": "tomatophp/filament-types",
-            "version": "v1.0.27",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/tomatophp/filament-types.git",
-                "reference": "1a3f616f2883a0ae4ee0effbd120748ff8688f7e"
+                "url": "https://github.com/Lead-2-Performance/filament-types.git",
+                "reference": "4137771f2d88a29087dee6441fbdbd9877ddb325"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tomatophp/filament-types/zipball/1a3f616f2883a0ae4ee0effbd120748ff8688f7e",
-                "reference": "1a3f616f2883a0ae4ee0effbd120748ff8688f7e",
+                "url": "https://api.github.com/repos/Lead-2-Performance/filament-types/zipball/4137771f2d88a29087dee6441fbdbd9877ddb325",
+                "reference": "4137771f2d88a29087dee6441fbdbd9877ddb325",
                 "shasum": ""
             },
             "require": {
-                "filament/filament": "^3.0.0",
+                "filament/filament": "^3.2",
                 "filament/spatie-laravel-media-library-plugin": "^3.2",
                 "filament/spatie-laravel-translatable-plugin": "^3.2",
                 "genealabs/laravel-model-caching": "^11.0",
@@ -8105,6 +8105,19 @@
                 "tomatophp/filament-icons": "^1.1",
                 "tomatophp/filament-translation-component": "^v1.0"
             },
+            "require-dev": {
+                "laravel/pint": "^1.18",
+                "livewire/livewire": "^2.10|^3.0",
+                "nunomaduro/larastan": "^2.9",
+                "orchestra/testbench": "^9.5",
+                "pestphp/pest": "^2.36",
+                "pestphp/pest-plugin-laravel": "^2.4",
+                "pestphp/pest-plugin-livewire": "^2.1",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^1.2",
+                "phpstan/phpstan-phpunit": "^1.4"
+            },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -8118,7 +8131,29 @@
                     "TomatoPHP\\FilamentTypes\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "TomatoPHP\\FilamentTypes\\Tests\\": "tests/src",
+                    "TomatoPHP\\FilamentTypes\\Tests\\Database\\Factories\\": "tests/database/factories"
+                }
+            },
+            "scripts": {
+                "testbench": [
+                    "vendor/bin/testbench package:discover --ansi"
+                ],
+                "analyse": [
+                    "vendor/bin/phpstan analyse src tests"
+                ],
+                "test": [
+                    "vendor/bin/pest"
+                ],
+                "test-coverage": [
+                    "vendor/bin/pest --coverage"
+                ],
+                "format": [
+                    "vendor/bin/pint"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -8131,6 +8166,8 @@
             "description": "Manage any type on your app in Database with easy to use Resource for FilamentPHP",
             "keywords": [
                 "database",
+                "filament-plugin",
+                "filamentphp",
                 "laravel",
                 "manager",
                 "php",
@@ -8138,16 +8175,15 @@
                 "types"
             ],
             "support": {
-                "issues": "https://github.com/tomatophp/filament-types/issues",
-                "source": "https://github.com/tomatophp/filament-types/tree/v1.0.27"
+                "source": "https://github.com/Lead-2-Performance/filament-types/tree/1.0.1"
             },
             "funding": [
                 {
-                    "url": "https://github.com/3x1io",
-                    "type": "github"
+                    "type": "github",
+                    "url": "https://github.com/3x1io"
                 }
             ],
-            "time": "2024-09-23T15:16:31+00:00"
+            "time": "2024-10-28T16:51:55+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -8369,7 +8405,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "tomatophp/filament-types": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

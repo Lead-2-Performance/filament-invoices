@@ -3,7 +3,7 @@
         'name' => 'tomatophp/filament-invoices',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '55f3cef2f8a7ed7613ffbc54cd4812dde9cdf43c',
+        'reference' => 'a96a038a57b7f5552aaa4833e7e04d096c6f71df',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -1277,7 +1277,7 @@
         'tomatophp/filament-invoices' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '55f3cef2f8a7ed7613ffbc54cd4812dde9cdf43c',
+            'reference' => 'a96a038a57b7f5552aaa4833e7e04d096c6f71df',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1302,12 +1302,14 @@
             'dev_requirement' => false,
         ),
         'tomatophp/filament-types' => array(
-            'pretty_version' => 'v1.0.27',
-            'version' => '1.0.27.0',
-            'reference' => '1a3f616f2883a0ae4ee0effbd120748ff8688f7e',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '4137771f2d88a29087dee6441fbdbd9877ddb325',
             'type' => 'library',
             'install_path' => __DIR__ . '/../tomatophp/filament-types',
-            'aliases' => array(),
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
             'dev_requirement' => false,
         ),
         'vlucas/phpdotenv' => array(

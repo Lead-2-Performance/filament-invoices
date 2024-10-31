@@ -4,12 +4,11 @@ namespace TomatoPHP\FilamentTypes\Models;
 
 use GeneaLabs\LaravelModelCaching\CachedModel;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
-use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property integer $id
- * @property integer $type_id
- * @property integer $model_id
+ * @property int $id
+ * @property int $type_id
+ * @property int $model_id
  * @property string $model_type
  * @property string $key
  * @property mixed $value
@@ -21,7 +20,8 @@ class TypesMeta extends CachedModel
 {
     use Cachable;
 
-    protected $cachePrefix = "tomato_types_meta_";
+    protected $cachePrefix = 'tomato_types_meta_';
+
     /**
      * @var array
      */
@@ -32,6 +32,7 @@ class TypesMeta extends CachedModel
      */
     public function type()
     {
-        return $this->belongsTo('TomatoPHP\FilamentTypes\Models\Type');
+        $model = config('filament-types.model') ?? \TomatoPHP\FilamentTypes\Models\Type::class;
+        return $this->belongsTo($model);
     }
 }
